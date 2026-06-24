@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { Trash2, Calendar, ExternalLink, Loader2 } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -25,7 +25,7 @@ export default function MyFavoritesPage() {
 
   const fetchFavorites = async () => {
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/favorites`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -55,7 +55,7 @@ export default function MyFavoritesPage() {
     setActionLoading(lessonId);
     const toastId = toast.loading("Removing...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/favorites/toggle`, {
         method: "POST",
         headers: {

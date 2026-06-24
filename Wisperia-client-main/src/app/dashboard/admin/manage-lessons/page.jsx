@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { 
   Trash2, Star, CheckCircle, ExternalLink, Calendar, 
@@ -33,7 +33,7 @@ export default function ManageLessonsPage() {
   const fetchLessons = async () => {
     setLoading(true);
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/lessons`, {
         headers: {
           authorization: `Bearer ${token}`
@@ -90,7 +90,7 @@ export default function ManageLessonsPage() {
     const newVal = !currentVal;
     const toastId = toast.loading("Updating featured status...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/lessons/${lessonId}/featured`, {
         method: "PUT",
         headers: {
@@ -114,7 +114,7 @@ export default function ManageLessonsPage() {
   const markReviewed = async (lessonId) => {
     const toastId = toast.loading("Marking as reviewed...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/lessons/${lessonId}/reviewed`, {
         method: "PUT",
         headers: {
@@ -140,7 +140,7 @@ export default function ManageLessonsPage() {
 
     const toastId = toast.loading("Deleting lesson...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/lessons/${lessonId}`, {
         method: "DELETE",
         headers: {

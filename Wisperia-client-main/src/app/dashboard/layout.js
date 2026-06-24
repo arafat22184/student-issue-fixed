@@ -12,8 +12,8 @@ export default async function DashboardLayout({ children }) {
   const role = user?.role || 'user';
 
   return (
-    <div suppressHydrationWarning className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-gray-50/40 text-gray-800">
-
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-gray-50/40 text-gray-800">
+      
       <DashboardSidebar user={user} role={role} />
 
       {/* Main Content Area */}
@@ -22,7 +22,7 @@ export default async function DashboardLayout({ children }) {
           {children}
         </main>
       </div>
-
+      
     </div>
   );
 }

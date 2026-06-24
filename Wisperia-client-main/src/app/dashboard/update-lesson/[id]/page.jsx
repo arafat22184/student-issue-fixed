@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { imageUpload } from "@/lib/imgUpload";
 import toast from "react-hot-toast";
 import { ArrowLeft, RefreshCw } from "lucide-react";
@@ -79,7 +79,7 @@ export default function UpdateLessonPage() {
         imageUrl = await imageUpload(fileInput);
       }
 
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const response = await fetch(`${BACKEND_URL}/lessons/${id}`, {
         method: "PUT",
         headers: { 

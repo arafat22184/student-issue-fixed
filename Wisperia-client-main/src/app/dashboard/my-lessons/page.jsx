@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { 
   Eye, EyeOff, Edit, Trash2, Calendar, Heart, 
   ExternalLink, Loader2 
@@ -22,7 +22,7 @@ export default function MyLessonsPage() {
 
   const fetchLessons = async () => {
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/user/my-lessons`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -44,7 +44,7 @@ export default function MyLessonsPage() {
     setActionLoading(lessonId);
     const toastId = toast.loading(`Updating ${label}...`);
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/lessons/${lessonId}`, {
         method: "PUT",
         headers: {
@@ -72,7 +72,7 @@ export default function MyLessonsPage() {
 
     const toastId = toast.loading("Deleting...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/lessons/${lessonId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }

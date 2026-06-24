@@ -16,13 +16,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.className} h-full antialiased`}>
-      <body suppressHydrationWarning>
+      <body>
         <Navbar />
         <main className="">
           {children}
           <Toaster position="top-center" reverseOrder={false} />
         </main>
-        <Footer />
+
+        <Footer/>
       </body>
     </html>
   );

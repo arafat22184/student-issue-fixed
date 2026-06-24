@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Shield, Trash2, UserPlus, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
@@ -17,7 +17,7 @@ export default function ManageUsersPage() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/users`, {
         headers: { authorization: `Bearer ${token}` }
       });
@@ -48,7 +48,7 @@ export default function ManageUsersPage() {
 
     const toastId = toast.loading("Updating role...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/users/${userId}/role`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", authorization: `Bearer ${token}` },
@@ -71,7 +71,7 @@ export default function ManageUsersPage() {
 
     const toastId = toast.loading("Deleting user...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/users/${userId}`, {
         method: "DELETE",
         headers: { authorization: `Bearer ${token}` }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { imageUpload } from "@/lib/imgUpload";
 import { User, ShieldAlert, RefreshCw, Activity, AlertCircle, Clock } from "lucide-react";
@@ -39,7 +39,7 @@ export default function AdminProfilePage() {
         finalPhotoUrl = await imageUpload(imageFile);
       }
 
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/user/profile`, {
         method: "PUT",
         headers: {

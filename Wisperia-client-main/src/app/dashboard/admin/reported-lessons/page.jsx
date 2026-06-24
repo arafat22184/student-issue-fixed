@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Trash2, CheckCircle, Info, Calendar, User, ShieldAlert, X } from "lucide-react";
 import toast from "react-hot-toast";
@@ -21,7 +21,7 @@ export default function ReportedLessonsPage() {
   const fetchReports = async () => {
     setLoading(true);
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/reported-lessons`, {
         headers: {
           authorization: `Bearer ${token}`
@@ -53,7 +53,7 @@ export default function ReportedLessonsPage() {
   const handleDeleteLesson = async (lessonId) => {
     const toastId = toast.loading("Permanently deleting lesson...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/lessons/${lessonId}`, {
         method: "DELETE",
         headers: {
@@ -76,7 +76,7 @@ export default function ReportedLessonsPage() {
   const handleIgnoreReports = async (lessonId) => {
     const toastId = toast.loading("Clearing lesson reports...");
     try {
-      const token = await authClient.getAccessToken();
+      const token = await getToken();
       const res = await fetch(`${BACKEND_URL}/admin/reported-lessons/${lessonId}/ignore`, {
         method: "POST",
         headers: {

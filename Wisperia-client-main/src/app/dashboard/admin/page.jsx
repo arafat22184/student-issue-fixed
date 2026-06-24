@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import {
   Users,
@@ -24,9 +24,8 @@ export default function AdminDashboardHome() {
 
   const fetchStats = useCallback(async () => {
     try {
-      const result = await authClient.getAccessToken();
-      console.log("Token Result:", result);
-      const token = result.accessToken || result.token || result;
+      const token = await getToken();
+      console.log("Token Result:", token);
 
       if (!token) {
         toast.error("Authentication token missing.");

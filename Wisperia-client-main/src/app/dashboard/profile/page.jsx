@@ -4,7 +4,7 @@ import { User, Heart, Calendar, ExternalLink, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { imageUpload } from "@/lib/imgUpload";
-import { authClient } from "@/lib/auth-client";
+import { authClient, getToken } from "@/lib/auth-client";
 
 export default function ProfilePage() {
   const { data: session, refetch } = authClient.useSession();
@@ -54,8 +54,7 @@ export default function ProfilePage() {
         uploadedUrl = await imageUpload(imageFile); 
       }
 
-      const tokenResult = await authClient.getAccessToken();
-      const token = typeof tokenResult === 'string' ? tokenResult : (tokenResult?.accessToken || tokenResult?.token);
+      const token = await getToken();
 
       if (!token) throw new Error("Authentication token missing");
       const res = await fetch(`${BACKEND_URL}/user/profile`, {
