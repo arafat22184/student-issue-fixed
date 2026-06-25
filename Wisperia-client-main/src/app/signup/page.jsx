@@ -59,60 +59,60 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[#fcf8f9]">
-      <div className="w-full max-w-lg bg-white p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(103,13,47,0.1)] border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-theme">
+      <div className="w-full max-w-lg card-theme p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
         
         <div className="mb-8 text-center">
-          <h2 className="text-4xl font-extrabold text-[#670D2F]">Join Wisperia</h2>
-          <p className="text-gray-500 mt-2">Start your journey of wisdom today</p>
+          <h2 className="text-4xl font-extrabold text-theme">Join Wisperia</h2>
+          <p className="text-muted mt-2">Start your journey of wisdom today</p>
         </div>
 
         <Form onSubmit={onSubmit} className="space-y-5">
           {/* Name Field */}
-          <TextField isRequired name="name" label="Full Name" labelPlacement="outside">
-            <Input placeholder="Enter your name" className="mt-2" />
+          <TextField isRequired name="name" label="Full Name" labelPlacement="outside" className="text-theme font-semibold">
+            <Input placeholder="Enter your name" className="mt-2 text-theme" />
           </TextField>
 
           {/* Image URL Field */}
-          <TextField name="imageUrl" label="Image URL (Optional)" labelPlacement="outside">
-            <Input placeholder="https://example.com/photo.jpg" className="mt-2" />
+          <TextField name="imageUrl" label="Image URL (Optional)" labelPlacement="outside" className="text-theme font-semibold">
+            <Input placeholder="https://example.com/photo.jpg" className="mt-2 text-theme" />
           </TextField>
 
           {/* Email Field */}
-          <TextField isRequired name="email" type="email" label="Email Address" labelPlacement="outside">
-            <Input placeholder="john@example.com" className="mt-2" />
+          <TextField isRequired name="email" type="email" label="Email Address" labelPlacement="outside" className="text-theme font-semibold">
+            <Input placeholder="john@example.com" className="mt-2 text-theme" />
           </TextField>
 
           {/* Password Field */}
-          <TextField isRequired name="password" type="password" label="Password" labelPlacement="outside">
-            <Input placeholder="********" className="mt-2" />
+          <TextField isRequired name="password" type="password" label="Password" labelPlacement="outside" className="text-theme font-semibold">
+            <Input placeholder="********" className="mt-2 text-theme" />
           </TextField>
 
           <Button 
             type="submit" 
             isLoading={loading}
-            className="w-full bg-[#670D2F] text-white font-bold py-6 rounded-xl hover:bg-[#5a0b27] transition"
+            className="w-full bg-primary text-[var(--background)] font-extrabold py-6 rounded-xl hover:opacity-95 transition cursor-pointer"
           >
             Create Account
           </Button>
         </Form>
 
         <div className="my-6 flex items-center gap-4">
-          <div className="h-px flex-1 bg-gray-200" />
-          <span className="text-gray-400 text-sm">OR</span>
-          <div className="h-px flex-1 bg-gray-200" />
+          <div className="h-px flex-1 bg-theme/15" />
+          <span className="text-muted text-sm">OR</span>
+          <div className="h-px flex-1 bg-theme/15" />
         </div>
 
         <Button 
           onClick={handleGoogleLogin}
-          className="w-full bg-white border border-gray-200 text-gray-700 font-medium py-6 rounded-xl hover:bg-gray-50 transition flex items-center justify-center gap-2"
+          className="w-full glass-button font-bold py-6 rounded-xl hover:opacity-95 transition flex items-center justify-center gap-2 cursor-pointer shadow-sm"
         >
           <FcGoogle className="w-5 h-5" /> Continue with Google
         </Button>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
+        <p className="text-center text-sm text-muted mt-6">
           Already have an account?{" "}
-          <Link href="/signin" className="text-[#670D2F] font-bold underline">
+          <Link href="/signin" className="text-theme font-bold underline hover:opacity-80">
             Login here
           </Link>
         </p>

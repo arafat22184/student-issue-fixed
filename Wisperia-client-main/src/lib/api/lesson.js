@@ -30,12 +30,12 @@ export const addLessons = async (lesson, jwtToken) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data?.message || "Failed to add lesson");
+      throw new Error(data?.error || data?.message || "Failed to add lesson");
     }
 
-    return { success: true, data };
+    return data;
   } catch (error) {
     console.error("Add Lesson Action Error:", error.message);
-    return { success: false, message: error.message };
+    throw error;
   }
 };

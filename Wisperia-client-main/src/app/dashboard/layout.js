@@ -12,7 +12,7 @@ export default async function DashboardLayout({ children }) {
   const role = user?.role || 'user';
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-gray-50/40 text-gray-800">
+    <div className="flex flex-col md:flex-row h-screen w-screen overflow-hidden bg-theme text-theme transition-all duration-300">
       
       <DashboardSidebar user={user} role={role} />
 

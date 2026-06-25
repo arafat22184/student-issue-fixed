@@ -1,10 +1,23 @@
 'use client';
 import { Bars, Heart, House, Person } from "@gravity-ui/icons";
 import { Drawer } from "@heroui/react";
-import { BookIcon, PlusCircleIcon } from "lucide-react";
+import { BookIcon, PlusCircleIcon, Sun, Moon } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
+import React, { useState, useEffect } from "react";
 
 export default function DashboardSidebar({ user, role }) {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
   const dashboardItems = {
     user: [
       { icon: House, label: "Home", link: '/dashboard' },
@@ -25,36 +38,51 @@ export default function DashboardSidebar({ user, role }) {
   const navItems = dashboardItems[role] || dashboardItems.user;
 
   return (
-    <div className="flex md:flex-col border-b md:border-b-0 md:border-r border-gray-100 bg-white md:w-64 p-4 md:p-6 justify-between md:justify-start">
+    <div className="flex md:flex-col border-b md:border-b-0 md:border-r border-theme/15 bg-theme/50 backdrop-blur-md md:w-64 p-4 md:p-6 justify-between md:justify-start transition-all duration-300">
       {/* Mobile Drawer */}
       <div className="md:hidden flex items-center justify-between w-full">
-        <Link href="/" className="font-extrabold text-[#670D2F] tracking-tight text-lg">🌿 Wisperia</Link>
-        <Drawer>
-          <button className="flex items-center gap-2 bg-[#670D2F]/5 text-[#670D2F] font-bold text-xs px-4 py-2 rounded-xl border border-[#670D2F]/10 cursor-pointer">
-            <Bars className="w-4 h-4" /> Menu
-          </button>
-          <Drawer.Content placement="left" className="bg-white max-w-xs">
-            <Drawer.Dialog className="p-6">
-               <nav className="flex flex-col gap-2">
-                {navItems.map((item) => (
-                  <Link key={item.label} href={item.link} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-xl">
-                    <item.icon className="size-5" /> {item.label}
-                  </Link>
-                ))}
-              </nav>
-            </Drawer.Dialog>
-          </Drawer.Content>
-        </Drawer>
+        <Link href="/" className="font-extrabold text-theme tracking-tight text-lg">🌿 Wisperia</Link>
+        <div className="flex items-center gap-3">
+          {mounted && (
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full glass-button hover:scale-105 active:scale-95 transition-all shadow-sm flex items-center justify-center cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4 text-yellow-300" />
+              ) : (
+                <Moon className="w-4 h-4 text-[#670D2F]" />
+              )}
+            </button>
+          )}
+          <Drawer>
+            <button className="flex items-center gap-2 bg-theme/10 text-theme font-bold text-xs px-4 py-2 rounded-xl border border-theme/15 cursor-pointer">
+              <Bars className="w-4 h-4" /> Menu
+            </button>
+            <Drawer.Content placement="left" className="bg-theme border border-theme/20 max-w-xs text-theme">
+              <Drawer.Dialog className="p-6">
+                 <nav className="flex flex-col gap-2">
+                  {navItems.map((item) => (
+                    <Link key={item.label} href={item.link} className="flex items-center gap-3 p-3 hover:bg-theme/10 rounded-xl text-theme font-semibold">
+                      <item.icon className="size-5" /> {item.label}
+                    </Link>
+                  ))}
+                </nav>
+              </Drawer.Dialog>
+            </Drawer.Content>
+          </Drawer>
+        </div>
       </div>
 
       {/* Desktop Sidebar */}
       <div className="hidden md:block w-full">
         <div className="mb-10 px-3">
-          <Link href="/" className="font-extrabold text-[#670D2F] text-2xl">🌿 Wisperia</Link>
+          <Link href="/" className="font-extrabold text-theme text-2xl">🌿 Wisperia</Link>
         </div>
-        <nav className="flex flex-col gap-1.5">
+        <nav className="flex flex-col gap-1.5 font-semibold">
           {navItems.map((item) => (
-            <Link key={item.label} href={item.link} className="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-[#670D2F]/5 text-gray-600">
+            <Link key={item.label} href={item.link} className="flex items-center gap-3.5 px-4 py-3 rounded-xl hover:bg-theme/10 text-muted hover:text-theme transition duration-200">
               <item.icon className="size-5" /> {item.label}
             </Link>
           ))}
@@ -62,15 +90,32 @@ export default function DashboardSidebar({ user, role }) {
       </div>
 
       {/* Footer */}
-      <div className="hidden md:block mt-auto border-t pt-6 px-3">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-pink-100 flex items-center justify-center font-bold">
-            {user?.name?.charAt(0) || "U"}
+      <div className="hidden md:block mt-auto border-t border-theme/15 pt-6 px-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-primary text-[var(--background)] flex items-center justify-center font-extrabold shadow">
+              {user?.name?.charAt(0) || "U"}
+            </div>
+            <div>
+              <p className="text-xs font-bold text-theme">{user?.name || "Seeker"}</p>
+              <p className="text-[10px] text-muted">{user?.email}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-bold">{user?.name || "Seeker"}</p>
-            <p className="text-[10px] text-gray-400">{user?.email}</p>
-          </div>
+
+          {/* Theme switcher for Desktop sidebar */}
+          {mounted && (
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full glass-button hover:scale-105 active:scale-95 transition-all shadow-sm flex items-center justify-center cursor-pointer"
+              aria-label="Toggle Theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4 text-yellow-300" />
+              ) : (
+                <Moon className="w-4 h-4 text-[#670D2F]" />
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>

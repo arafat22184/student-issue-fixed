@@ -28,14 +28,14 @@ const Learning = () => {
   ];
 
   return (
-    <section className="py-20 px-6 bg-[#670D2F]">
+    <section className="py-20 px-6 bg-theme">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-theme mb-4">
             Why Learning From Life Matters
           </h2>
-          <p className="text-pink-200 text-lg">
+          <p className="text-muted text-lg">
             Every realization is a step forward. Let&apos;s document your journey.
           </p>
         </div>
@@ -49,13 +49,13 @@ const Learning = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               whileHover={{ y: -10 }}
-              className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300"
+              className="group p-8 rounded-[2rem] glass-panel hover:shadow-2xl transition-all duration-300 cursor-pointer"
             >
-              <div className="text-pink-300 mb-6 bg-white/10 w-16 h-16 rounded-2xl flex items-center justify-center group-hover:bg-pink-500/20 transition-colors">
+              <div className="text-theme mb-6 bg-theme/10 w-16 h-16 rounded-2xl flex items-center justify-center group-hover:bg-theme/20 transition-colors">
                 {item.icon}
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-              <p className="text-pink-100 text-sm leading-relaxed">{item.desc}</p>
+              <h3 className="text-xl font-bold text-theme mb-3">{item.title}</h3>
+              <p className="text-muted text-sm leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>

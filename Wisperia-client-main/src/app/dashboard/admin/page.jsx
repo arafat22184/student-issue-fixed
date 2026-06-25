@@ -33,7 +33,7 @@ export default function AdminDashboardHome() {
         return;
       }
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/dashboard-stats`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/stats`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`, 

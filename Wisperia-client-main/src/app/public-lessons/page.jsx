@@ -62,16 +62,16 @@ export default function PublicLessonsPage() {
   useEffect(() => { fetchLessons(); }, [fetchLessons]);
 
   return (
-    <main className="bg-[#fcf8f9] min-h-screen py-16 px-4 md:px-8">
+    <main className="bg-theme min-h-screen py-16 px-4 md:px-8 text-theme transition-all duration-300">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <section className="text-center mb-16">
-          <h1 className="text-5xl font-extrabold text-[#670D2F] mb-4">Public Life Lessons</h1>
-          <p className="text-gray-500">Explore wisdom and growth insights.</p>
+          <h1 className="text-5xl font-extrabold text-theme mb-4">Public Life Lessons</h1>
+          <p className="text-muted">Explore wisdom and growth insights.</p>
         </section>
 
         {/* Search & Filters */}
-        <section className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm mb-12">
+        <section className="card-theme p-6 rounded-3xl shadow-md mb-12">
           <div className="grid md:grid-cols-4 gap-4">
             <input 
               type="text" 
@@ -91,24 +91,44 @@ export default function PublicLessonsPage() {
 
         {/* Lessons Grid */}
         {loading ? (
-          <div className="text-center py-20">Loading lessons...</div>
+          <div className="text-center py-20 text-muted">Loading lessons...</div>
         ) : (
           <div className="grid md:grid-cols-3 gap-8">
             {lessons.map((lesson) => {
-              const isLocked = (lesson.accesslevel === "premium") && !isPremiumUser && currentUser?.role !== "admin";
+              const isLocked = (lesson.accesslevel === "premium" || lesson.accessLevel === "premium") && !isPremiumUser && currentUser?.role !== "admin";
               
               return (
-                <motion.div key={lesson._id} className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col">
-                  <div className="h-48 bg-gray-100 rounded-2xl mb-4 relative overflow-hidden">
-                    <Image src={lesson.image || "/placeholder.webp"} fill alt="lesson" className="object-cover" />
-                    {isLocked && <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center"><Lock className="text-[#670D2F]" /></div>}
-                  </div>
-                  <h3 className="font-bold text-[#670D2F] text-xl mb-2">{lesson.title}</h3>
-                  <p className="text-gray-500 text-sm mb-6 flex-1">{lesson.description.slice(0, 100)}...</p>
+                <motion.div key={lesson._id} className="card-theme rounded-3xl p-6 shadow-md flex flex-col relative overflow-hidden min-h-[380px]">
                   
-                  <Link href={`/lesson/${lesson._id}`} className="w-full text-center py-3 bg-[#670D2F] text-white rounded-xl font-bold">
-                    {isLocked ? "Unlock Premium" : "See Details"}
-                  </Link>
+                  {/* Blurred content wrapper when locked */}
+                  <div className={`flex-1 flex flex-col ${isLocked ? "filter blur-[4px] pointer-events-none select-none" : ""}`}>
+                    <div className="h-48 bg-theme/5 rounded-2xl mb-4 relative overflow-hidden">
+                      <Image src={lesson.image || "/logo.webp"} fill alt="lesson" className="object-cover" />
+                    </div>
+                    <h3 className="font-bold text-theme text-xl mb-2 leading-snug">{lesson.title}</h3>
+                    <p className="text-muted text-sm mb-6 flex-1">{lesson.description ? lesson.description.slice(0, 100) + "..." : ""}</p>
+                  </div>
+                  
+                  {/* Unlock overlay / Details Link */}
+                  {isLocked ? (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-theme/40 backdrop-blur-[2px] z-10">
+                      <Lock className="w-10 h-10 text-theme mb-3" />
+                      <span className="text-[10px] font-black text-amber-900 bg-yellow-400 px-3 py-1.5 rounded-full uppercase tracking-wider mb-4 shadow">
+                        Premium Lesson
+                      </span>
+                      <Link 
+                        href="/pricing" 
+                        className="w-full text-center py-3 bg-primary hover:opacity-90 text-[var(--background)] rounded-xl font-bold transition shadow-lg cursor-pointer"
+                      >
+                        Upgrade to Unlock
+                      </Link>
+                    </div>
+                  ) : (
+                    <Link href={`/lesson/${lesson._id}`} className="w-full text-center py-3 bg-primary text-[var(--background)] rounded-xl font-bold hover:opacity-90 transition mt-auto">
+                      See Details
+                    </Link>
+                  )}
+                  
                 </motion.div>
               );
             })}

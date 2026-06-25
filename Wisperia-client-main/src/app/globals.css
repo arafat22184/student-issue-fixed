@@ -1,2 +1,214 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
+
+/* =========================
+   Light Theme
+========================= */
+
+:root {
+  --background: #ffffff;
+  --foreground: #670d2f;
+
+  --primary: #670d2f;
+  --primary-hover: #7a1238;
+
+  --secondary: #a53860;
+
+  --card: #ffffff;
+  --card-foreground: #670d2f;
+
+  --border: #f0c6d6;
+
+  --muted: #fdf0f5;
+  --muted-foreground: #8a3c5a;
+}
+
+/* =========================
+   Dark Theme (Deeper Dark Pink Theme)
+   ========================= */
+
+.dark {
+  --background: #450117;
+  --foreground: #ffffff;
+
+  --primary: #ffffff;
+  --primary-hover: #fcd7e4;
+
+  --secondary: #fdf0f5;
+
+  --card: rgba(255, 255, 255, 0.06);
+  --card-foreground: #ffffff;
+
+  --border: rgba(255, 255, 255, 0.12);
+
+  --muted: rgba(255, 255, 255, 0.04);
+  --muted-foreground: #f4c9d8;
+}
+
+/* =========================
+   Base Styles
+   ========================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  transition:
+    background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global input controls */
+input, select, textarea {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--muted-foreground) !important;
+  opacity: 0.6;
+}
+
+.dark input, .dark select, .dark textarea {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark input::placeholder, .dark textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* =========================
+   Reusable Theme Classes
+   ========================= */
+
+.bg-theme {
+  background-color: var(--background);
+}
+
+.text-theme {
+  color: var(--foreground);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.border-theme {
+  border-color: var(--border);
+}
+
+.card-theme {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.bg-muted {
+  background-color: var(--muted);
+}
+
+/* Glassmorphism Styles (iOS-like) */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18);
+}
+
+:root:not(.dark) .glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(103, 13, 47, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(103, 13, 47, 0.06);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+:root:not(.dark) .glass-button {
+  background: rgba(103, 13, 47, 0.05);
+  border: 1px solid rgba(103, 13, 47, 0.12);
+  color: #670D2F !important;
+}
+
+:root:not(.dark) .glass-button:hover {
+  background: rgba(103, 13, 47, 0.09);
+  border-color: rgba(103, 13, 47, 0.2);
+}
+
+/* =========================
+   Scrollbar
+   ========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+/* =========================
+   Selection
+   ========================= */
+
+::selection {
+  background: var(--primary);
+  color: var(--background);
+}
+
+/* =========================
+   HeroUI Fixes
+   ========================= */
+
+.heroui-card {
+  background: var(--card);
+}
+
+.heroui-button-primary {
+  background: var(--primary);
+}

@@ -32,12 +32,12 @@ const GetStarted = () => {
   ];
 
   return (
-    <section className="py-20 px-6 bg-[#fcf8f9]">
+    <section className="py-20 px-6 bg-theme/5 border-t border-theme/10">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-[#670D2F] mb-4">How to Get Started</h2>
-          <p className="text-gray-500">Follow these 4 simple steps to start sharing your wisdom today.</p>
+          <h2 className="text-4xl font-extrabold text-theme mb-4">How to Get Started</h2>
+          <p className="text-muted">Follow these 4 simple steps to start sharing your wisdom today.</p>
         </div>
 
         {/* Steps Grid */}
@@ -48,21 +48,21 @@ const GetStarted = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.15 }}
-              className="relative bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl transition-all"
+              className="relative card-theme p-8 rounded-[2rem] shadow-md hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
             >
               {/* Step Number */}
-              <div className="absolute -top-4 -left-2 text-6xl font-black text-[#670D2F]/10">
+              <div className="absolute -top-4 -left-2 text-6xl font-black text-theme/10">
                 {step.id}
               </div>
               
               {/* Icon */}
-              <div className="bg-[#670D2F] text-white p-4 rounded-2xl w-fit mb-6">
+              <div className="bg-primary text-[var(--background)] p-4 rounded-2xl w-fit mb-6 shadow-sm">
                 {step.icon}
               </div>
 
               {/* Text */}
-              <h3 className="text-xl font-bold text-[#670D2F] mb-2">{step.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+              <h3 className="text-xl font-bold text-theme mb-2">{step.title}</h3>
+              <p className="text-muted text-sm leading-relaxed">{step.desc}</p>
             </motion.div>
           ))}
         </div>
