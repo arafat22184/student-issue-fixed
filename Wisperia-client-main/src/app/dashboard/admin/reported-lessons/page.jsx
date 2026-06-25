@@ -16,7 +16,7 @@ export default function ReportedLessonsPage() {
   // Active Selected Group for Modal
   const [selectedGroup, setSelectedGroup] = useState(null);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchReports = async () => {
     setLoading(true);
@@ -170,13 +170,13 @@ export default function ReportedLessonsPage() {
       {/* Moderation Details Modal */}
       <AnimatePresence>
         {selectedGroup && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.95, y: 15 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}
@@ -184,7 +184,7 @@ export default function ReportedLessonsPage() {
               className="bg-white rounded-[2.5rem] w-full max-w-xl p-8 border border-gray-100 shadow-2xl relative max-h-[85vh] flex flex-col justify-between"
             >
               {/* Close button */}
-              <button 
+              <button
                 onClick={() => setSelectedGroup(null)}
                 className="absolute top-6 right-6 p-2 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition cursor-pointer"
               >
@@ -215,7 +215,7 @@ export default function ReportedLessonsPage() {
                           {new Date(r.timestamp).toLocaleString()}
                         </span>
                       </div>
-                      
+
                       <div className="bg-red-50/30 border border-red-100/50 rounded-xl p-4">
                         <span className="text-[10px] font-extrabold uppercase tracking-wide text-red-700 block mb-1">Reason Selected:</span>
                         <p className="text-sm font-bold text-[#670D2F]">{r.reason || "Inappropriate Content"}</p>
@@ -235,7 +235,7 @@ export default function ReportedLessonsPage() {
                 >
                   Ignore Reports
                 </motion.button>
-                
+
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

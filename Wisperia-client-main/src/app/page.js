@@ -5,7 +5,7 @@ import Learning from "@/components/Learning";
 import Stats from "@/components/Stats";
 import HomeDynamicSections from "@/components/HomeDynamicSections";
 
-const BACKEND_URL = process.env.SERVER_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.SERVER_URL || "https://wisperia-server.vercel.app";
 
 async function getFeaturedLessons() {
   try {
@@ -38,16 +38,16 @@ export default async function Home() {
       <BannerSlider />
       <Stats />
       <Learning />
-      
+
       {featured && featured.length > 0 && (
         <FeaturedLessons lesson={featured} />
       )}
-      
-      <HomeDynamicSections 
-        topContributors={topContributors} 
-        mostSaved={mostSaved} 
+
+      <HomeDynamicSections
+        topContributors={topContributors}
+        mostSaved={mostSaved}
       />
-      
+
       <GetStarted />
     </div>
   );

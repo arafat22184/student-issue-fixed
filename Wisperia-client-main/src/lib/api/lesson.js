@@ -1,15 +1,15 @@
 "use server";
 import { authClient } from "../auth-client";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
 const getAuthHeader = async (optionalToken) => {
   if (optionalToken) {
     return { Authorization: `Bearer ${optionalToken}` };
   }
-  const { data: sessionData } = await authClient.token(); 
+  const { data: sessionData } = await authClient.token();
   const token = sessionData?.token;
-  
+
   if (!token) throw new Error("Unauthorized: No access token found.");
   return { Authorization: `Bearer ${token}` };
 };

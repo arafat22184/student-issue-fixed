@@ -15,7 +15,7 @@ export default function AdminProfilePage() {
   const [imageFile, setImageFile] = useState(null);
   const [updating, setUpdating] = useState(false);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   useEffect(() => {
     if (!isPending) {

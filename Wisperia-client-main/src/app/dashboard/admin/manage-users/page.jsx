@@ -12,7 +12,7 @@ export default function ManageUsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchUsers = async () => {
     setLoading(true);

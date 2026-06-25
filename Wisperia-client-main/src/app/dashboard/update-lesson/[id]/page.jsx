@@ -30,7 +30,7 @@ export default function UpdateLessonPage() {
   const [accessLevel, setAccessLevel] = useState("free");
   const [currentImageUrl, setCurrentImageUrl] = useState("");
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   useEffect(() => {
     if (!id || !currentUser) return;
@@ -82,9 +82,9 @@ export default function UpdateLessonPage() {
       const token = await getToken();
       const response = await fetch(`${BACKEND_URL}/lessons/${id}`, {
         method: "PUT",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           title,

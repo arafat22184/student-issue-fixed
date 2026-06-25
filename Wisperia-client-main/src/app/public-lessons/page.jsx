@@ -37,7 +37,7 @@ export default function PublicLessonsPage() {
   const fetchLessons = useCallback(async () => {
     setLoading(true);
     try {
-      const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+      const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
       const queryParams = new URLSearchParams({
         search: debouncedSearch,
         category,

@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { 
-  Trash2, Star, CheckCircle, ExternalLink, Calendar, 
+import {
+  Trash2, Star, CheckCircle, ExternalLink, Calendar,
   Filter, User, ShieldAlert, AlertTriangle, HelpCircle
 } from "lucide-react";
 import Link from "next/link";
@@ -28,7 +28,7 @@ export default function ManageLessonsPage() {
   // Deletion Modal State
   const [lessonToDelete, setLessonToDelete] = useState(null);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchLessons = async () => {
     setLoading(true);
@@ -263,7 +263,7 @@ export default function ManageLessonsPage() {
               <tbody className="divide-y divide-gray-50">
                 {filteredLessons.map((l, index) => (
                   <tr key={l._id} className="hover:bg-[#fcf8f9]/20 transition-all duration-150">
-                    
+
                     {/* Title & Category */}
                     <td className="p-5">
                       <div className="max-w-xs md:max-w-md">
@@ -284,22 +284,20 @@ export default function ManageLessonsPage() {
 
                     {/* Visibility */}
                     <td className="p-5 text-center">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                        l.visibility === "public" 
-                          ? "bg-green-50 border-green-200 text-green-700" 
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${l.visibility === "public"
+                          ? "bg-green-50 border-green-200 text-green-700"
                           : "bg-gray-50 border-gray-200 text-gray-500"
-                      }`}>
+                        }`}>
                         {l.visibility}
                       </span>
                     </td>
 
                     {/* Access Level */}
                     <td className="p-5 text-center">
-                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                        l.accesslevel === "premium" || l.accessLevel === "premium"
-                          ? "bg-amber-50 border-amber-200 text-amber-700" 
+                      <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${l.accesslevel === "premium" || l.accessLevel === "premium"
+                          ? "bg-amber-50 border-amber-200 text-amber-700"
                           : "bg-blue-50 border-blue-200 text-blue-700"
-                      }`}>
+                        }`}>
                         {l.accesslevel || l.accessLevel || "free"}
                       </span>
                     </td>
@@ -307,15 +305,14 @@ export default function ManageLessonsPage() {
                     {/* Actions Group */}
                     <td className="p-5 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-3.5">
-                        
+
                         {/* Toggle Featured */}
                         <button
                           onClick={() => toggleFeatured(l._id, l.isFeatured || false)}
-                          className={`p-2 rounded-xl transition-all border cursor-pointer ${
-                            l.isFeatured 
-                              ? "text-yellow-600 bg-yellow-50 border-yellow-200 shadow-sm" 
+                          className={`p-2 rounded-xl transition-all border cursor-pointer ${l.isFeatured
+                              ? "text-yellow-600 bg-yellow-50 border-yellow-200 shadow-sm"
                               : "text-gray-400 bg-white border-gray-200 hover:text-yellow-600 hover:bg-yellow-50/30 hover:border-yellow-200"
-                          }`}
+                            }`}
                           title={l.isFeatured ? "Remove from Featured" : "Mark as Featured"}
                         >
                           <Star className={`w-4 h-4 ${l.isFeatured ? "fill-yellow-500" : ""}`} />
@@ -366,13 +363,13 @@ export default function ManageLessonsPage() {
       {/* Custom Deletion Confirmation Modal */}
       <AnimatePresence>
         {lessonToDelete && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.95, y: 15 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}

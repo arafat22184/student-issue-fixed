@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { authClient, getToken } from "@/lib/auth-client";
-import { 
-  Eye, EyeOff, Edit, Trash2, Calendar, Heart, 
-  ExternalLink, Loader2 
+import {
+  Eye, EyeOff, Edit, Trash2, Calendar, Heart,
+  ExternalLink, Loader2
 } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -16,9 +16,9 @@ export default function MyLessonsPage() {
 
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(null); 
+  const [actionLoading, setActionLoading] = useState(null);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchLessons = async () => {
     try {
@@ -53,7 +53,7 @@ export default function MyLessonsPage() {
         },
         body: JSON.stringify(updates)
       });
-      
+
       if (res.ok) {
         toast.success(`Lesson updated!`, { id: toastId });
         setLessons(prev => prev.map(l => l._id === lessonId ? { ...l, ...updates } : l));
@@ -125,7 +125,7 @@ export default function MyLessonsPage() {
                   <td className="p-5 font-bold text-[#670D2F]">{lesson.title}</td>
                   <td className="p-5 text-xs text-gray-500">{new Date(lesson.createdAt).toLocaleDateString()}</td>
                   <td className="p-5 text-center">
-                    <button 
+                    <button
                       disabled={actionLoading === lesson._id}
                       onClick={() => updateLesson(lesson._id, { visibility: lesson.visibility === 'public' ? 'private' : 'public' }, 'visibility')}
                       className="text-xs font-bold px-3 py-1 rounded-full bg-gray-100"
@@ -134,7 +134,7 @@ export default function MyLessonsPage() {
                     </button>
                   </td>
                   <td className="p-5 text-center">
-                    <button 
+                    <button
                       disabled={!isPremiumUser || actionLoading === lesson._id}
                       onClick={() => updateLesson(lesson._id, { accesslevel: lesson.accesslevel === 'premium' ? 'free' : 'premium' }, 'access')}
                       className={`text-xs font-bold px-3 py-1 rounded-full ${lesson.accesslevel === 'premium' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700'}`}

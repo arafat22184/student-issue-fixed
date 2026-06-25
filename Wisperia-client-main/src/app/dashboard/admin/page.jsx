@@ -20,7 +20,7 @@ export default function AdminDashboardHome() {
   const [loading, setLoading] = useState(true);
 
   const BACKEND_URL =
-    process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+    process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchStats = useCallback(async () => {
     try {
@@ -36,7 +36,7 @@ export default function AdminDashboardHome() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/stats`, {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`, 
+          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });

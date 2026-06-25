@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const [imageFile, setImageFile] = useState(null);
   const [updating, setUpdating] = useState(false);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchUserLessons = async () => {
     if (!user?.id) return;
@@ -51,7 +51,7 @@ export default function ProfilePage() {
     try {
       let uploadedUrl = photoUrl;
       if (imageFile) {
-        uploadedUrl = await imageUpload(imageFile); 
+        uploadedUrl = await imageUpload(imageFile);
       }
 
       const token = await getToken();
@@ -68,7 +68,7 @@ export default function ProfilePage() {
 
       if (res.ok) {
         toast.success("Profile updated!", { id: toastId });
-        await refetch(); 
+        await refetch();
         setImageFile(null);
       } else {
         throw new Error("Update failed");
@@ -115,18 +115,18 @@ export default function ProfilePage() {
       <section>
         <h3 className="text-xl font-bold mb-6">My Public Lessons</h3>
         {loadingLessons ? <p>Loading...</p> : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {lessons.map(item => (
-                    <div key={item._id} className="bg-white p-6 rounded-3xl border shadow-sm">
-                        <h4 className="font-bold text-[#670D2F] truncate">{item.title}</h4>
-                        <p className="text-xs text-gray-500 mt-2 line-clamp-2">{item.description}</p>
-                        <div className="mt-4 pt-4 border-t flex justify-between items-center text-xs font-bold text-pink-600">
-                           <span>❤️ {item.likesCount || 0} Likes</span>
-                           <Link href={`/lesson/${item._id}`} className="hover:underline flex items-center gap-1">Details <ExternalLink size={12} /></Link>
-                        </div>
-                    </div>
-                ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {lessons.map(item => (
+              <div key={item._id} className="bg-white p-6 rounded-3xl border shadow-sm">
+                <h4 className="font-bold text-[#670D2F] truncate">{item.title}</h4>
+                <p className="text-xs text-gray-500 mt-2 line-clamp-2">{item.description}</p>
+                <div className="mt-4 pt-4 border-t flex justify-between items-center text-xs font-bold text-pink-600">
+                  <span>❤️ {item.likesCount || 0} Likes</span>
+                  <Link href={`/lesson/${item._id}`} className="hover:underline flex items-center gap-1">Details <ExternalLink size={12} /></Link>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </section>
     </div>

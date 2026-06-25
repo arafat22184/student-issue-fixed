@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { BookOpen, Heart, PlusCircle, User, ArrowRight, Activity, Calendar } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,7 +29,7 @@ export default function UserDashboardHome() {
   const [loading, setLoading] = useState(true);
   console.log(session);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchStats = async () => {
     try {
@@ -40,7 +40,7 @@ export default function UserDashboardHome() {
       }
       const res = await fetch(`${BACKEND_URL}/user/dashboard-stats`, {
         headers: {
-         "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`
         }
       });
       if (res.ok) {
@@ -79,13 +79,13 @@ export default function UserDashboardHome() {
   const maxCount = Math.max(...categoriesList.map(c => c.count), 1);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="space-y-8"
     >
       {/* Welcome banner */}
-      <motion.header 
+      <motion.header
         initial={{ y: -15, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -106,13 +106,13 @@ export default function UserDashboardHome() {
       </motion.header>
 
       {/* Analytics overview */}
-      <motion.section 
+      <motion.section
         variants={containerVariants}
         initial="hidden"
         animate="show"
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
-        <motion.div 
+        <motion.div
           variants={cardVariants}
           whileHover={{ y: -4 }}
           className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-all duration-300"
@@ -126,7 +126,7 @@ export default function UserDashboardHome() {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={cardVariants}
           whileHover={{ y: -4 }}
           className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-all duration-300"
@@ -140,7 +140,7 @@ export default function UserDashboardHome() {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={cardVariants}
           whileHover={{ y: -4 }}
           className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm flex items-center justify-between hover:shadow-md transition-all duration-300"
@@ -159,9 +159,9 @@ export default function UserDashboardHome() {
 
       {/* Chart & Quick Shortcuts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Category reflection distribution chart */}
-        <motion.section 
+        <motion.section
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -185,7 +185,7 @@ export default function UserDashboardHome() {
                       <span className="text-[#670D2F]">{c.count}</span>
                     </div>
                     <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                      <motion.div 
+                      <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${widthPercent}%` }}
                         transition={{ duration: 0.8, ease: "easeOut", delay: i * 0.05 }}
@@ -200,7 +200,7 @@ export default function UserDashboardHome() {
         </motion.section>
 
         {/* Shortcuts */}
-        <motion.section 
+        <motion.section
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -209,20 +209,20 @@ export default function UserDashboardHome() {
           <div>
             <h3 className="text-lg font-bold text-gray-800 mb-6">Quick Actions</h3>
             <div className="flex flex-col gap-2">
-              <Link 
-                href="/dashboard/add-lesson" 
+              <Link
+                href="/dashboard/add-lesson"
                 className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#670D2F]/5 text-gray-700 font-bold text-sm transition"
               >
                 <PlusCircle className="w-5 h-5 text-[#670D2F]" /> Add New Lesson
               </Link>
-              <Link 
-                href="/dashboard/my-lessons" 
+              <Link
+                href="/dashboard/my-lessons"
                 className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#670D2F]/5 text-gray-700 font-bold text-sm transition"
               >
                 <BookOpen className="w-5 h-5 text-[#670D2F]" /> Manage My Lessons
               </Link>
-              <Link 
-                href="/dashboard/profile" 
+              <Link
+                href="/dashboard/profile"
                 className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#670D2F]/5 text-gray-700 font-bold text-sm transition"
               >
                 <User className="w-5 h-5 text-[#670D2F]" /> View My Profile
@@ -233,8 +233,8 @@ export default function UserDashboardHome() {
             <div className="border-t border-gray-100 pt-4 mt-6">
               <p className="text-xs text-gray-400 mb-3">Unlock all premium wisdom archives.</p>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link 
-                  href="/pricing" 
+                <Link
+                  href="/pricing"
                   className="block text-center py-2.5 rounded-xl bg-yellow-400 text-amber-950 font-extrabold text-xs hover:bg-yellow-500 transition shadow"
                 >
                   Upgrade to Premium ⭐
@@ -246,7 +246,7 @@ export default function UserDashboardHome() {
       </div>
 
       {/* Recent lessons list */}
-      <motion.section 
+      <motion.section
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
@@ -258,11 +258,11 @@ export default function UserDashboardHome() {
         ) : (
           <div className="divide-y divide-gray-100">
             {stats.recentLessons.map((l, i) => (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 + 0.3 }}
-                key={l._id} 
+                key={l._id}
                 className="py-4 first:pt-0 last:pb-0 flex items-center justify-between gap-4"
               >
                 <div>
@@ -272,7 +272,7 @@ export default function UserDashboardHome() {
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(l.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
-                <Link 
+                <Link
                   href={`/lesson/${l._id}`}
                   className="flex items-center gap-1.5 text-xs font-bold text-[#670D2F] hover:underline whitespace-nowrap"
                 >

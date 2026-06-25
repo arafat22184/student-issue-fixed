@@ -15,13 +15,13 @@ export default function MyFavoritesPage() {
 
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState(null); 
+  const [actionLoading, setActionLoading] = useState(null);
 
   // Filter States
   const [category, setCategory] = useState("All");
   const [emotionalTone, setEmotionalTone] = useState("All");
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
 
   const fetchFavorites = async () => {
     try {
@@ -131,9 +131,9 @@ export default function MyFavoritesPage() {
                   <td className="p-5 text-xs text-gray-500">{new Date(fav.createdAt).toLocaleDateString()}</td>
                   <td className="p-5 text-right flex justify-end gap-2">
                     <Link href={`/lesson/${fav._id}`} className="p-2 hover:text-[#670D2F]"><ExternalLink className="w-4 h-4" /></Link>
-                    <button 
+                    <button
                       disabled={actionLoading === fav._id}
-                      onClick={() => removeFavorite(fav._id)} 
+                      onClick={() => removeFavorite(fav._id)}
                       className="p-2 hover:text-red-600 disabled:opacity-50"
                     >
                       <Trash2 className="w-4 h-4" />
