@@ -105,7 +105,7 @@ app.post(
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.CLIENT_URL || "http://localhost:3000"],
+    origin: [process.env.CLIENT_URL || "https://wisperia-client-eta.vercel.app"],
   }),
 );
 

@@ -13,7 +13,7 @@ import { NextResponse } from "next/server";
  */
 export async function GET() {
   const response = NextResponse.redirect(
-    new URL("/signin", process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000")
+    new URL("/signin", process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "https://wisperia-client-eta.vercel.app")
   );
 
   // better-auth cookie names (covers all known variants)
