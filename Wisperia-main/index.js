@@ -111,8 +111,8 @@ app.use(
 
 
 const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  limit: 300, 
+  windowMs: 15 * 60 * 1000,
+  limit: 300,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -289,12 +289,17 @@ async function run() {
           priceId,
           createdAt: new Date(),
         });
+        console.log(result, "result")
 
+        const currentUser = await userCollection.findOne({ _id: new ObjectId(userId) })
+        console.log(currentUser, "Current user...")
         // Update user role and isPremium fields
-        await userCollection.updateOne(
+        const userUpdate = await userCollection.updateOne(
           { _id: new ObjectId(userId) },
           { $set: { plan: "premium", isPremium: true } },
         );
+
+        console.log(userUpdate, "userUpdate")
 
         res.json({ msg: "Payment Successful!" });
       } catch (err) {
@@ -695,7 +700,6 @@ async function run() {
     app.get("/user/dashboard-stats", verifyToken, async (req, res) => {
       try {
         const userId = req.user.id;
-        console.log(userId,"userId");
         const totalCreated = await lessonCollection.countDocuments({ userId });
         const totalSaved = await favoritesCollection.countDocuments({ userId });
         const recentLessons = await lessonCollection
@@ -703,7 +707,6 @@ async function run() {
           .sort({ createdAt: -1 })
           .limit(5)
           .toArray();
-          console.log(totalCreated,totalSaved,recentLessons,"gjfju")
 
         // Categorized distribution for simple visualization chart
         const categoryStats = await lessonCollection
@@ -760,7 +763,7 @@ async function run() {
           visibility: "public",
         });
         const totalReported = await reportsCollection.countDocuments();
-         
+
         // Today's new lessons count
         const startOfToday = new Date();
         startOfToday.setHours(0, 0, 0, 0);
