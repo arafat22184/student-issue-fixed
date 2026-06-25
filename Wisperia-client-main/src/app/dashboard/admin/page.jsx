@@ -20,7 +20,7 @@ export default function AdminDashboardHome() {
   const [loading, setLoading] = useState(true);
 
   const BACKEND_URL =
-    process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
+    process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
   const fetchStats = useCallback(async () => {
     try {

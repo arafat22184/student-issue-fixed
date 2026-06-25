@@ -1,7 +1,7 @@
 "use server";
 import { authClient } from "../auth-client";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
+const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
 const getAuthHeader = async (optionalToken) => {
   if (optionalToken) {

@@ -65,7 +65,7 @@ function StatBadge({ icon: Icon, label, value, color = "text-theme" }) {
 
 function AuthorCard({ lesson, router }) {
   const [totalLessons, setTotalLessons] = useState(null);
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
   useEffect(() => {
     if (!lesson?.userId) return;
@@ -319,7 +319,7 @@ export default function LessonDetailsPage() {
   const [viewCount] = useState(() => Math.floor(Math.random() * 9500) + 500);
   const [commentCount, setCommentCount] = useState(null);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
   /* fetch lesson */
   const fetchData = async () => {

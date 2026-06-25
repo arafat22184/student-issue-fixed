@@ -19,7 +19,7 @@ export default function MyLessonsPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
   const fetchLessons = async () => {
     try {
@@ -95,69 +95,97 @@ export default function MyLessonsPage() {
   };
 
   if (loading) return (
-    <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-[#670D2F]" /></div>
+    <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-[#670D2F] dark:text-white" /></div>
   );
 
   return (
     <div className="space-y-8 p-4">
-      <header className="flex justify-between items-center">
+      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-[#670D2F]">My Lessons</h1>
-          <p className="text-gray-500 text-sm">Manage your insights and published lessons.</p>
+          <h1 className="text-3xl font-extrabold text-[#670D2F] dark:text-white">My Lessons</h1>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Manage your insights and published lessons.</p>
         </div>
-        <Link href="/dashboard/add-lesson" className="bg-[#670D2F] text-white px-5 py-3 rounded-xl font-bold text-sm hover:bg-[#5a0b27]">
+        <Link 
+          href="/dashboard/add-lesson" 
+          className="bg-[#670D2F] dark:bg-white text-white dark:text-[#670D2F] px-5 py-3 rounded-xl font-bold text-sm hover:bg-[#5a0b27] dark:hover:bg-gray-100 transition shadow-md"
+        >
           Add New Lesson
         </Link>
       </header>
 
       {lessons.length === 0 ? (
-        <div className="bg-white rounded-3xl border p-12 text-center">
-          <p className="text-gray-400 mb-6">No lessons found. Start your journey today!</p>
-          <Link href="/dashboard/add-lesson" className="bg-[#670D2F] text-white px-6 py-2.5 rounded-xl font-bold">Create Lesson</Link>
+        <div className="card-theme rounded-3xl p-12 text-center shadow-sm">
+          <p className="text-gray-400 dark:text-gray-500 mb-6 font-medium">No lessons found. Start your journey today!</p>
+          <Link 
+            href="/dashboard/add-lesson" 
+            className="bg-[#670D2F] dark:bg-white text-white dark:text-[#670D2F] px-6 py-2.5 rounded-xl font-bold hover:bg-[#5a0b27] dark:hover:bg-gray-100 transition shadow-md inline-block"
+          >
+            Create Lesson
+          </Link>
         </div>
       ) : (
-        <div className="bg-white rounded-3xl border overflow-hidden shadow-sm">
-          <table className="w-full text-left">
-            <thead className="bg-gray-50 text-xs font-bold text-gray-500 uppercase">
-              <tr>
-                <th className="p-5">Title</th>
-                <th className="p-5">Date</th>
-                <th className="p-5 text-center">Visibility</th>
-                <th className="p-5 text-center">Access</th>
-                <th className="p-5 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {lessons.map((lesson) => (
-                <tr key={lesson._id} className="hover:bg-gray-50">
-                  <td className="p-5 font-bold text-[#670D2F]">{lesson.title}</td>
-                  <td className="p-5 text-xs text-gray-500">{new Date(lesson.createdAt).toLocaleDateString()}</td>
-                  <td className="p-5 text-center">
-                    <button
-                      disabled={actionLoading === lesson._id}
-                      onClick={() => updateLesson(lesson._id, { visibility: lesson.visibility === 'public' ? 'private' : 'public' }, 'visibility')}
-                      className="text-xs font-bold px-3 py-1 rounded-full bg-gray-100"
-                    >
-                      {lesson.visibility}
-                    </button>
-                  </td>
-                  <td className="p-5 text-center">
-                    <button
-                      disabled={!isPremiumUser || actionLoading === lesson._id}
-                      onClick={() => updateLesson(lesson._id, { accesslevel: lesson.accesslevel === 'premium' ? 'free' : 'premium' }, 'access')}
-                      className={`text-xs font-bold px-3 py-1 rounded-full ${lesson.accesslevel === 'premium' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700'}`}
-                    >
-                      {lesson.accesslevel || 'free'}
-                    </button>
-                  </td>
-                  <td className="p-5 text-right flex justify-end gap-2">
-                    <Link href={`/dashboard/update-lesson/${lesson._id}`} className="p-2 hover:text-blue-600"><Edit className="w-4 h-4" /></Link>
-                    <button onClick={() => handleDelete(lesson._id, lesson.title)} className="p-2 hover:text-red-600 cursor-pointer"><Trash2 className="w-4 h-4" /></button>
-                  </td>
+        <div className="card-theme rounded-3xl overflow-hidden shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-gray-50 dark:bg-white/5 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">
+                <tr className="border-b border-gray-100 dark:border-white/10">
+                  <th className="p-5">Title</th>
+                  <th className="p-5">Date</th>
+                  <th className="p-5 text-center">Visibility</th>
+                  <th className="p-5 text-center">Access</th>
+                  <th className="p-5 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-white/10">
+                {lessons.map((lesson) => (
+                  <tr key={lesson._id} className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+                    <td className="p-5 font-bold text-[#670D2F] dark:text-white max-w-xs truncate">{lesson.title}</td>
+                    <td className="p-5 text-xs text-gray-500 dark:text-gray-400">{new Date(lesson.createdAt).toLocaleDateString()}</td>
+                    <td className="p-5 text-center">
+                      <button
+                        disabled={actionLoading === lesson._id}
+                        onClick={() => updateLesson(lesson._id, { visibility: lesson.visibility === 'public' ? 'private' : 'public' }, 'visibility')}
+                        className="text-xs font-bold px-3 py-1 rounded-full bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-white/20 transition cursor-pointer border border-transparent"
+                      >
+                        {lesson.visibility}
+                      </button>
+                    </td>
+                    <td className="p-5 text-center">
+                      <button
+                        disabled={!isPremiumUser || actionLoading === lesson._id}
+                        onClick={() => updateLesson(lesson._id, { accesslevel: lesson.accesslevel === 'premium' ? 'free' : 'premium' }, 'access')}
+                        className={`text-xs font-bold px-3 py-1 rounded-full border transition ${
+                          lesson.accesslevel === 'premium' 
+                            ? 'bg-yellow-100 dark:bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-200/50 dark:border-yellow-500/20 hover:bg-yellow-200/50 dark:hover:bg-yellow-500/20' 
+                            : 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200/50 dark:border-blue-500/20 hover:bg-blue-200/50 dark:hover:bg-blue-500/20'
+                        } ${!isPremiumUser ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+                      >
+                        {lesson.accesslevel || 'free'}
+                      </button>
+                    </td>
+                    <td className="p-5 text-right whitespace-nowrap">
+                      <div className="flex justify-end items-center gap-2">
+                        <Link 
+                          href={`/dashboard/update-lesson/${lesson._id}`} 
+                          className="p-2 text-gray-400 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
+                          title="Edit Lesson"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Link>
+                        <button 
+                          onClick={() => handleDelete(lesson._id, lesson.title)} 
+                          className="p-2 text-gray-400 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
+                          title="Delete Lesson"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

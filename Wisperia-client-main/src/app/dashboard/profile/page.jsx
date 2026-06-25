@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const [imageFile, setImageFile] = useState(null);
   const [updating, setUpdating] = useState(false);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
   const fetchUserLessons = async () => {
     if (!user?.id) return;
@@ -80,32 +80,45 @@ export default function ProfilePage() {
     }
   };
 
-  if (!user) return <div className="flex justify-center py-20 animate-pulse text-[#670D2F] font-bold">Loading...</div>;
+  if (!user) return <div className="flex justify-center py-20 animate-pulse text-[#670D2F] dark:text-white font-bold">Loading...</div>;
 
   return (
     <div className="space-y-8 p-4">
       {/* Profile Overview */}
-      <section className="bg-white rounded-3xl border shadow-sm p-8 flex flex-col md:flex-row gap-8 items-center">
+      <section className="card-theme rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center shadow-sm">
         <div className="relative">
-          <img src={user.image || "/default-avatar.png"} alt={user.name} className="w-32 h-32 rounded-full object-cover border-4 border-[#670D2F]/10" />
-          {isPremium && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-yellow-400 text-[10px] font-bold px-3 py-1 rounded-full border-2 border-white shadow">Premium ⭐</span>}
+          <img src={user.image || "/default-avatar.png"} alt={user.name} className="w-32 h-32 rounded-full object-cover border-4 border-[#670D2F]/10 dark:border-white/10" />
+          {isPremium && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-yellow-400 text-[10px] font-bold px-3 py-1 rounded-full border-2 border-white dark:border-[#450117] text-[#670D2F] shadow">Premium ⭐</span>}
         </div>
         <div className="text-center md:text-left space-y-2">
-          <h2 className="text-3xl font-extrabold text-[#670D2F]">{user.name}</h2>
-          <p className="text-gray-500 text-sm">{user.email}</p>
-          <div className="flex gap-3 pt-2">
-            <span className="bg-[#670D2F]/10 text-[#670D2F] px-4 py-1 rounded-full text-xs font-bold">{lessons.length} Public Lessons</span>
+          <h2 className="text-3xl font-extrabold text-[#670D2F] dark:text-white">{user.name}</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{user.email}</p>
+          <div className="flex justify-center md:justify-start gap-3 pt-2">
+            <span className="bg-[#670D2F]/10 dark:bg-white/10 text-[#670D2F] dark:text-white px-4 py-1 rounded-full text-xs font-bold">{lessons.length} Public Lessons</span>
           </div>
         </div>
       </section>
 
       {/* Edit Form */}
-      <section className="bg-white rounded-3xl border shadow-sm p-8">
-        <h3 className="text-lg font-bold mb-6">Edit Profile Details</h3>
+      <section className="card-theme rounded-3xl p-8 shadow-sm">
+        <h3 className="text-lg font-bold mb-6 text-theme">Edit Profile Details</h3>
         <form onSubmit={handleUpdateProfile} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-3 border rounded-xl" placeholder="Name" />
-          <input type="file" onChange={(e) => setImageFile(e.target.files[0])} className="w-full p-2 border rounded-xl" />
-          <button disabled={updating} className="bg-[#670D2F] text-white py-3 rounded-xl font-bold flex gap-2 items-center justify-center">
+          <input 
+            type="text" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
+            className="w-full p-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-white/5 text-gray-900 dark:text-white outline-none focus:border-[#670D2F] dark:focus:border-white transition" 
+            placeholder="Name" 
+          />
+          <input 
+            type="file" 
+            onChange={(e) => setImageFile(e.target.files[0])} 
+            className="w-full p-2 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-white/5 text-gray-900 dark:text-white text-sm outline-none cursor-pointer" 
+          />
+          <button 
+            disabled={updating} 
+            className="md:col-span-2 bg-[#670D2F] dark:bg-white text-white dark:text-[#670D2F] py-3 rounded-xl font-bold flex gap-2 items-center justify-center hover:bg-[#5a0b27] dark:hover:bg-gray-100 transition cursor-pointer shadow-md disabled:opacity-50"
+          >
             {updating ? <RefreshCw className="w-4 h-4 animate-spin" /> : "Save Changes"}
           </button>
         </form>
@@ -113,16 +126,20 @@ export default function ProfilePage() {
 
       {/* Lessons Grid */}
       <section>
-        <h3 className="text-xl font-bold mb-6">My Public Lessons</h3>
-        {loadingLessons ? <p>Loading...</p> : (
+        <h3 className="text-xl font-bold mb-6 text-theme">My Public Lessons</h3>
+        {loadingLessons ? <p className="text-gray-500 dark:text-gray-400">Loading...</p> : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {lessons.map(item => (
-              <div key={item._id} className="bg-white p-6 rounded-3xl border shadow-sm">
-                <h4 className="font-bold text-[#670D2F] truncate">{item.title}</h4>
-                <p className="text-xs text-gray-500 mt-2 line-clamp-2">{item.description}</p>
-                <div className="mt-4 pt-4 border-t flex justify-between items-center text-xs font-bold text-pink-600">
+              <div key={item._id} className="card-theme p-6 rounded-3xl shadow-sm flex flex-col justify-between">
+                <div>
+                  <h4 className="font-bold text-[#670D2F] dark:text-white truncate">{item.title}</h4>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 line-clamp-2">{item.description}</p>
+                </div>
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-white/10 flex justify-between items-center text-xs font-bold text-pink-600 dark:text-pink-400">
                   <span>❤️ {item.likesCount || 0} Likes</span>
-                  <Link href={`/lesson/${item._id}`} className="hover:underline flex items-center gap-1">Details <ExternalLink size={12} /></Link>
+                  <Link href={`/lesson/${item._id}`} className="hover:underline flex items-center gap-1 text-[#670D2F] dark:text-white">
+                    Details <ExternalLink size={12} />
+                  </Link>
                 </div>
               </div>
             ))}

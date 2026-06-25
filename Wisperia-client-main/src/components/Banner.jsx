@@ -44,11 +44,11 @@ export default function HeroBanner() {
 
         
         <div className="flex flex-wrap gap-4 mt-4">
-          <button className="px-8 py-4 rounded-full bg-primary text-white font-bold hover:scale-105 transition shadow-xl flex items-center gap-2">
+          <button className="px-8 py-4 rounded-full bg-primary text-white dark:text-[#670D2F] font-bold hover:scale-105 transition shadow-xl flex items-center gap-2 cursor-pointer">
             Share a Lesson <ArrowRight className="w-5 h-5" />
           </button>
 
-          <button className="px-8 py-4 rounded-full border border-theme text-theme hover:bg-muted transition flex items-center gap-2">
+          <button className="px-8 py-4 rounded-full border border-theme text-theme hover:bg-muted transition flex items-center gap-2 cursor-pointer">
             <Play className="w-4 h-4" /> Watch Demo
           </button>
         </div>

@@ -5,7 +5,7 @@ import Learning from "@/components/Learning";
 import Stats from "@/components/Stats";
 import HomeDynamicSections from "@/components/HomeDynamicSections";
 
-const BACKEND_URL = process.env.SERVER_URL || "https://wisperia-server.vercel.app";
+const BACKEND_URL = process.env.SERVER_URL || "http://localhost:8000";
 
 async function getFeaturedLessons() {
   try {

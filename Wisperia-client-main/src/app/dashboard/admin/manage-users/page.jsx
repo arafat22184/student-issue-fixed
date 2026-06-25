@@ -13,7 +13,7 @@ export default function ManageUsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://wisperia-server.vercel.app";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -112,7 +112,7 @@ export default function ManageUsersPage() {
   if (isPending || loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="w-10 h-10 border-4 border-[#670D2F] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-[#670D2F] dark:border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -120,62 +120,74 @@ export default function ManageUsersPage() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-3xl font-extrabold text-[#670D2F]">Manage Users</h1>
-        <p className="text-gray-500 text-sm">Review accounts, roles, and activity.</p>
+        <h1 className="text-3xl font-extrabold text-[#670D2F] dark:text-white">Manage Users</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">Review accounts, roles, and activity.</p>
       </header>
 
-      <div className="bg-white rounded-[2rem] border shadow-sm overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-bold">
-            <tr>
-              <th className="p-5">User</th>
-              <th className="p-5">Email</th>
-              <th className="p-5 text-center">Lessons</th>
-              <th className="p-5 text-center">Plan</th>
-              <th className="p-5 text-center">Role</th>
-              <th className="p-5 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50">
-            {users.map((u) => (
-              <tr key={u._id} className="hover:bg-gray-50/50">
-                <td className="p-5 flex items-center gap-3">
-                  <img src={u.image || "/default-avatar.png"} className="w-10 h-10 rounded-full object-cover" />
-                  <span className="font-bold text-sm">{u.name}</span>
-                </td>
-                <td className="p-5 text-sm text-gray-600">{u.email}</td>
-                <td className="p-5 text-center text-sm font-bold">{u.lessonsCount || 0}</td>
-                <td className="p-5 text-center">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${u.isPremium ? "bg-yellow-100 text-yellow-700" : "bg-gray-100"}`}>
-                    {u.isPremium ? "PREMIUM ⭐" : "FREE"}
-                  </span>
-                </td>
-                <td className="p-5 text-center">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold ${u.role === "admin" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}>
-                    {u.role.toUpperCase()}
-                  </span>
-                </td>
-                <td className="p-5 text-right flex justify-end gap-2">
-                  <button
-                    onClick={() => updateRole(u._id, u.role, u.name)}
-                    title={u.role === "admin" ? "Revoke admin" : "Make admin"}
-                    className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
-                  >
-                    <UserPlus size={16} />
-                  </button>
-                  <button
-                    onClick={() => deleteUser(u._id, u.name)}
-                    disabled={session.user.id === u._id}
-                    title="Delete user"
-                    className="p-2 hover:bg-red-50 text-red-600 rounded-lg disabled:opacity-30 cursor-pointer"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </td>
+      <div className="card-theme rounded-[2rem] shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-gray-400 text-xs uppercase font-bold">
+              <tr className="border-b border-gray-100 dark:border-white/10">
+                <th className="p-5">User</th>
+                <th className="p-5">Email</th>
+                <th className="p-5 text-center">Lessons</th>
+                <th className="p-5 text-center">Plan</th>
+                <th className="p-5 text-center">Role</th>
+                <th className="p-5 text-right">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-50 dark:divide-white/10">
+              {users.map((u) => (
+                <tr key={u._id} className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
+                  <td className="p-5 flex items-center gap-3">
+                    <img src={u.image || "/default-avatar.png"} className="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-white/10" />
+                    <span className="font-bold text-sm text-theme">{u.name}</span>
+                  </td>
+                  <td className="p-5 text-sm text-gray-600 dark:text-gray-300">{u.email}</td>
+                  <td className="p-5 text-center text-sm font-bold text-theme">{u.lessonsCount || 0}</td>
+                  <td className="p-5 text-center">
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold border ${
+                      u.isPremium 
+                        ? "bg-yellow-100 dark:bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-200/50 dark:border-yellow-500/20" 
+                        : "bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-200 border-transparent"
+                    }`}>
+                      {u.isPremium ? "PREMIUM ⭐" : "FREE"}
+                    </span>
+                  </td>
+                  <td className="p-5 text-center">
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold border ${
+                      u.role === "admin" 
+                        ? "bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-400 border-red-200/50 dark:border-red-500/20" 
+                        : "bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-200/50 dark:border-blue-500/20"
+                    }`}>
+                      {u.role.toUpperCase()}
+                    </span>
+                  </td>
+                  <td className="p-5 text-right whitespace-nowrap">
+                    <div className="flex justify-end items-center gap-2">
+                      <button
+                        onClick={() => updateRole(u._id, u.role, u.name)}
+                        title={u.role === "admin" ? "Revoke admin" : "Make admin"}
+                        className="p-2 text-gray-400 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg cursor-pointer transition-colors"
+                      >
+                        <UserPlus size={16} />
+                      </button>
+                      <button
+                        onClick={() => deleteUser(u._id, u.name)}
+                        disabled={session.user.id === u._id}
+                        title="Delete user"
+                        className="p-2 hover:bg-red-50 dark:hover:bg-red-950/20 text-red-600 rounded-lg disabled:opacity-30 cursor-pointer transition-colors"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
