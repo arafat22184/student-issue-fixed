@@ -118,7 +118,7 @@ function AuthorCard({ lesson, router }) {
   );
 }
 
-function CommentSection({ lessonId, currentUser, BACKEND_URL }) {
+function CommentSection({ lessonId, currentUser, BACKEND_URL, onCountChange }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
@@ -127,7 +127,11 @@ function CommentSection({ lessonId, currentUser, BACKEND_URL }) {
   const loadComments = async () => {
     try {
       const res = await fetch(`${BACKEND_URL}/lessons/${lessonId}/comments`);
-      if (res.ok) setComments(await res.json());
+      if (res.ok) {
+        const data = await res.json();
+        setComments(data);
+        onCountChange?.(data.length);
+      }
     } catch { }
     finally { setLoadingComments(false); }
   };
@@ -313,6 +317,7 @@ export default function LessonDetailsPage() {
   const [reason, setReason] = useState("");
   const [reporting, setReporting] = useState(false);
   const [viewCount] = useState(() => Math.floor(Math.random() * 9500) + 500);
+  const [commentCount, setCommentCount] = useState(null);
 
   const BACKEND_URL = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:8000";
 
@@ -600,7 +605,7 @@ export default function LessonDetailsPage() {
             <StatBadge icon={Heart} label="Likes" value={fmtCount(lesson.likesCount)} color="text-red-500" />
             <StatBadge icon={Bookmark} label="Saves" value={fmtCount(lesson.favoritesCount || 0)} color="text-yellow-500" />
             <StatBadge icon={Eye} label="Views" value={fmtCount(viewCount)} color="text-blue-500" />
-            <StatBadge icon={MessageSquare} label="Comments" value="—" color="text-green-500" />
+            <StatBadge icon={MessageSquare} label="Comments" value={commentCount === null ? "…" : fmtCount(commentCount)} color="text-green-500" />
           </div>
 
           {/* ── Interaction Buttons ── */}
@@ -663,6 +668,7 @@ export default function LessonDetailsPage() {
             lessonId={id}
             currentUser={currentUser}
             BACKEND_URL={BACKEND_URL}
+            onCountChange={setCommentCount}
           />
         </motion.div>
 
