@@ -57,7 +57,7 @@ export default function HomeDynamicSections({ topContributors = [], mostSaved = 
                 <p className="text-muted text-sm mt-1">{c.count} lessons shared</p>
                 {/* View all lessons by this contributor */}
                 <Link
-                  href={`/public-lessons?search=${c.name}`}
+                  href={`/public-lessons?userId=${c._id}`}
                   className="inline-flex items-center text-xs font-bold text-theme mt-2 hover:underline"
                 >
                   View lessons <ArrowRight className="w-3 h-3 ml-1" />

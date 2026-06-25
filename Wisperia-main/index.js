@@ -360,8 +360,13 @@ async function run() {
           sort,
           page = 1,
           limit = 6,
+          userId,
         } = req.query;
         const query = { visibility: "public" };
+
+        if (userId) {
+          query.userId = userId;
+        }
 
         if (search) {
           query.$or = [

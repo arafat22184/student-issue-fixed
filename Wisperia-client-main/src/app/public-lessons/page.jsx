@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Lock, Search, Calendar, User, ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -10,10 +11,14 @@ import Image from "next/image";
 const CATEGORIES = ["All", "Personal Growth", "Career", "Relationships", "Mindset", "Mistakes Learned"];
 const TONES = ["All", "Motivational", "Sad", "Realization", "Gratitude"];
 
-export default function PublicLessonsPage() {
+function PublicLessonsList() {
   const { data: session } = authClient.useSession();
   const currentUser = session?.user;
   const isPremiumUser = currentUser?.plan === "premium" || currentUser?.isPremium;
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const userIdParam = searchParams.get("userId") || "";
 
   const [lessons, setLessons] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -46,6 +51,9 @@ export default function PublicLessonsPage() {
         page: currentPage.toString(),
         limit: "6",
       });
+      if (userIdParam) {
+        queryParams.set("userId", userIdParam);
+      }
 
       const res = await fetch(`${BACKEND_URL}/public-lessons?${queryParams.toString()}`);
       if (!res.ok) throw new Error("Failed to fetch");
@@ -57,7 +65,11 @@ export default function PublicLessonsPage() {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, category, emotionalTone, sort, currentPage]);
+  }, [debouncedSearch, category, emotionalTone, sort, currentPage, userIdParam]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [userIdParam]);
 
   useEffect(() => { fetchLessons(); }, [fetchLessons]);
 
@@ -69,6 +81,24 @@ export default function PublicLessonsPage() {
           <h1 className="text-5xl font-extrabold text-theme mb-4">Public Life Lessons</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm">Explore wisdom and growth insights.</p>
         </section>
+
+        {/* User Filter Status */}
+        {userIdParam && (
+          <div className="card-theme p-4 rounded-2xl mb-8 flex items-center justify-between shadow-sm border border-primary/20 bg-primary/5">
+            <span className="text-sm font-semibold text-theme">
+              Showing public lessons shared by{" "}
+              <span className="text-primary font-bold">
+                {lessons[0]?.creatorName || "this contributor"}
+              </span>
+            </span>
+            <button
+              onClick={() => router.push("/public-lessons")}
+              className="px-4 py-1.5 bg-primary text-[var(--background)] hover:opacity-90 rounded-xl text-xs font-bold transition cursor-pointer"
+            >
+              Show All Lessons
+            </button>
+          </div>
+        )}
 
         {/* Search & Filters */}
         <section className="card-theme p-6 rounded-3xl shadow-md mb-12">
@@ -203,5 +233,17 @@ export default function PublicLessonsPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function PublicLessonsPage() {
+  return (
+    <Suspense fallback={
+      <div className="bg-theme min-h-screen py-16 px-4 md:px-8 text-theme transition-all duration-300 flex items-center justify-center">
+        <div className="text-center text-gray-500 dark:text-gray-400">Loading page...</div>
+      </div>
+    }>
+      <PublicLessonsList />
+    </Suspense>
   );
 }
