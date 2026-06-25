@@ -16,7 +16,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user,"User");
+  console.log(user, "User");
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -144,13 +144,15 @@ const Navbar = () => {
           ) : (
             <Dropdown>
               <DropdownTrigger>
-                <Avatar
+                <Image
+                  width={40}
+                  height={40}
                   src={
                     user?.image ||
                     "https://img.heroui.chat/image/avatar?w=400&h=400&u=3"
                   }
-                  name={user?.name}
-                  className="h-10 w-10 border border-theme/20 cursor-pointer"
+                  alt={user?.name}
+                  className="h-10 w-10 border border-theme/20 cursor-pointer rounded-full"
                 />
               </DropdownTrigger>
               <Dropdown.Popover className="bg-theme border border-theme/20 shadow-xl backdrop-blur-md rounded-2xl">
