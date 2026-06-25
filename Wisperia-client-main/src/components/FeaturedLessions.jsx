@@ -42,10 +42,10 @@ const FeaturedLessons = ({ lesson = [] }) => {
                   <div>
                     {/* Image */}
                     <div className="relative h-60 overflow-hidden bg-theme/5">
-                      <img 
-                        src={lesson.image || "/logo.webp"} 
-                        alt={lesson.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                      <img
+                        src={lesson.image || "/favicon.png"}
+                        alt={lesson.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                       />
                       <div className="absolute top-4 left-4 bg-theme/80 text-theme backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold z-10 border border-theme/20 shadow-sm">
                         {lesson.category}
@@ -81,8 +81,8 @@ const FeaturedLessons = ({ lesson = [] }) => {
                     <span className="text-[10px] font-black text-amber-900 bg-yellow-400 px-3 py-1.5 rounded-full uppercase tracking-wider mb-4 shadow">
                       Premium Lesson
                     </span>
-                    <Link 
-                      href="/pricing" 
+                    <Link
+                      href="/pricing"
                       className="w-full text-center py-3 bg-primary hover:opacity-90 text-[var(--background)] rounded-xl font-bold transition shadow-lg cursor-pointer"
                     >
                       Upgrade to Unlock

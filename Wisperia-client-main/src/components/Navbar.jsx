@@ -44,13 +44,13 @@ const Navbar = () => {
       <header className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
         <Link href="/">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center">
             <Image
-              height={32}
-              width={32}
-              src="/logo.webp"
+              height={100}
+              width={100}
+              src="/favicon.png"
               alt="logo"
-              className="rounded-full border border-theme/20 shadow-sm"
+              className="overflow-hidden"
             />
             <span className="font-extrabold text-xl text-theme tracking-wide">
               Wisperia

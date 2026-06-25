@@ -19,7 +19,7 @@ export default function PublicLessonsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  
+
   // States
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -73,9 +73,9 @@ export default function PublicLessonsPage() {
         {/* Search & Filters */}
         <section className="card-theme p-6 rounded-3xl shadow-md mb-12">
           <div className="grid md:grid-cols-4 gap-4">
-            <input 
-              type="text" 
-              placeholder="Search..." 
+            <input
+              type="text"
+              placeholder="Search..."
               className="col-span-1 md:col-span-2 p-3 border rounded-xl"
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -96,19 +96,19 @@ export default function PublicLessonsPage() {
           <div className="grid md:grid-cols-3 gap-8">
             {lessons.map((lesson) => {
               const isLocked = (lesson.accesslevel === "premium" || lesson.accessLevel === "premium") && !isPremiumUser && currentUser?.role !== "admin";
-              
+
               return (
                 <motion.div key={lesson._id} className="card-theme rounded-3xl p-6 shadow-md flex flex-col relative overflow-hidden min-h-[380px]">
-                  
+
                   {/* Blurred content wrapper when locked */}
                   <div className={`flex-1 flex flex-col ${isLocked ? "filter blur-[4px] pointer-events-none select-none" : ""}`}>
                     <div className="h-48 bg-theme/5 rounded-2xl mb-4 relative overflow-hidden">
-                      <Image src={lesson.image || "/logo.webp"} fill alt="lesson" className="object-cover" />
+                      <Image src={lesson.image || "/favicon.png"} fill alt="lesson" className="object-cover" />
                     </div>
                     <h3 className="font-bold text-theme text-xl mb-2 leading-snug">{lesson.title}</h3>
                     <p className="text-muted text-sm mb-6 flex-1">{lesson.description ? lesson.description.slice(0, 100) + "..." : ""}</p>
                   </div>
-                  
+
                   {/* Unlock overlay / Details Link */}
                   {isLocked ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-theme/40 backdrop-blur-[2px] z-10">
@@ -116,8 +116,8 @@ export default function PublicLessonsPage() {
                       <span className="text-[10px] font-black text-amber-900 bg-yellow-400 px-3 py-1.5 rounded-full uppercase tracking-wider mb-4 shadow">
                         Premium Lesson
                       </span>
-                      <Link 
-                        href="/pricing" 
+                      <Link
+                        href="/pricing"
                         className="w-full text-center py-3 bg-primary hover:opacity-90 text-[var(--background)] rounded-xl font-bold transition shadow-lg cursor-pointer"
                       >
                         Upgrade to Unlock
@@ -128,7 +128,7 @@ export default function PublicLessonsPage() {
                       See Details
                     </Link>
                   )}
-                  
+
                 </motion.div>
               );
             })}

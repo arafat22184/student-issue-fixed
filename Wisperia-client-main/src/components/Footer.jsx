@@ -10,18 +10,18 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
   const pathname = usePathname();
   // console.log(pathname , "footer");
-  if (pathname.includes('dashboard')){
+  if (pathname.includes('dashboard')) {
     return null;
   }
   return (
     <footer className="bg-theme border-t border-theme/20 mt-16 transition-all duration-300">
       <div className="container mx-auto px-4">
         <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
-          
+
           {/* Brand Section */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/logo.webp" alt="Wisperia Logo" width={40} height={40} className="border border-theme/20 rounded-full" />
+            <Link href="/" className="flex items-center">
+              <Image src="/favicon.png" alt="Wisperia Logo" width={100} height={100} className="overflow-hidden" />
               <span className="text-2xl font-extrabold text-theme">Wisperia</span>
             </Link>
             <p className="text-sm text-muted leading-relaxed">
