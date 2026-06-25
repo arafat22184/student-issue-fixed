@@ -75,8 +75,8 @@ export default function UpdateLessonPage() {
       const fileInput = e.target.image.files;
       let imageUrl = currentImageUrl;
 
-      if (fileInput) {
-        imageUrl = await imageUpload(fileInput);
+      if (fileInput && fileInput.length > 0) {
+        imageUrl = await imageUpload(fileInput[0]);
       }
 
       const token = await getToken();
