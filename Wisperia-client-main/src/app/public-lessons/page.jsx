@@ -43,8 +43,8 @@ export default function PublicLessonsPage() {
         category,
         emotionalTone,
         sort,
-        page: currentPage,
-        limit: 6,
+        page: currentPage.toString(),
+        limit: "6",
       });
 
       const res = await fetch(`${BACKEND_URL}/public-lessons?${queryParams.toString()}`);
@@ -67,72 +67,139 @@ export default function PublicLessonsPage() {
         {/* Header */}
         <section className="text-center mb-16">
           <h1 className="text-5xl font-extrabold text-theme mb-4">Public Life Lessons</h1>
-          <p className="text-muted">Explore wisdom and growth insights.</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">Explore wisdom and growth insights.</p>
         </section>
 
         {/* Search & Filters */}
         <section className="card-theme p-6 rounded-3xl shadow-md mb-12">
-          <div className="grid md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             <input
               type="text"
               placeholder="Search..."
-              className="col-span-1 md:col-span-2 p-3 border rounded-xl"
-              onChange={(e) => setSearch(e.target.value)}
+              className="col-span-1 md:col-span-2 p-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-white/5 text-gray-900 dark:text-white outline-none focus:border-primary dark:focus:border-white transition"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
             />
-            <select className="p-3 border rounded-xl" onChange={(e) => setCategory(e.target.value)}>
-              {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            <select 
+              className="p-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-[#450117] text-gray-900 dark:text-white outline-none cursor-pointer" 
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              {CATEGORIES.map(cat => (
+                <option key={cat} value={cat} className="bg-white dark:bg-[#450117] text-gray-900 dark:text-white">
+                  {cat}
+                </option>
+              ))}
             </select>
-            <select className="p-3 border rounded-xl" onChange={(e) => setSort(e.target.value)}>
-              <option value="newest">Newest</option>
-              <option value="mostSaved">Most Saved</option>
+            <select 
+              className="p-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-[#450117] text-gray-900 dark:text-white outline-none cursor-pointer" 
+              value={emotionalTone}
+              onChange={(e) => {
+                setEmotionalTone(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              {TONES.map(tone => (
+                <option key={tone} value={tone} className="bg-white dark:bg-[#450117] text-gray-900 dark:text-white">
+                  {tone}
+                </option>
+              ))}
+            </select>
+            <select 
+              className="p-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-[#450117] text-gray-900 dark:text-white outline-none cursor-pointer" 
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                setCurrentPage(1);
+              }}
+            >
+              <option value="newest" className="bg-white dark:bg-[#450117] text-gray-900 dark:text-white">Newest</option>
+              <option value="mostSaved" className="bg-white dark:bg-[#450117] text-gray-900 dark:text-white">Most Saved</option>
             </select>
           </div>
         </section>
 
         {/* Lessons Grid */}
         {loading ? (
-          <div className="text-center py-20 text-muted">Loading lessons...</div>
-        ) : (
-          <div className="grid md:grid-cols-3 gap-8">
-            {lessons.map((lesson) => {
-              const isLocked = (lesson.accesslevel === "premium" || lesson.accessLevel === "premium") && !isPremiumUser && currentUser?.role !== "admin";
-
-              return (
-                <motion.div key={lesson._id} className="card-theme rounded-3xl p-6 shadow-md flex flex-col relative overflow-hidden min-h-[380px]">
-
-                  {/* Blurred content wrapper when locked */}
-                  <div className={`flex-1 flex flex-col ${isLocked ? "filter blur-[4px] pointer-events-none select-none" : ""}`}>
-                    <div className="h-48 bg-theme/5 rounded-2xl mb-4 relative overflow-hidden">
-                      <Image src={lesson.image || "/favicon.png"} fill alt="lesson" className="object-cover" />
-                    </div>
-                    <h3 className="font-bold text-theme text-xl mb-2 leading-snug">{lesson.title}</h3>
-                    <p className="text-muted text-sm mb-6 flex-1">{lesson.description ? lesson.description.slice(0, 100) + "..." : ""}</p>
-                  </div>
-
-                  {/* Unlock overlay / Details Link */}
-                  {isLocked ? (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-theme/40 backdrop-blur-[2px] z-10">
-                      <Lock className="w-10 h-10 text-theme mb-3" />
-                      <span className="text-[10px] font-black text-amber-900 bg-yellow-400 px-3 py-1.5 rounded-full uppercase tracking-wider mb-4 shadow">
-                        Premium Lesson
-                      </span>
-                      <Link
-                        href="/pricing"
-                        className="w-full text-center py-3 bg-primary hover:opacity-90 text-[var(--background)] rounded-xl font-bold transition shadow-lg cursor-pointer"
-                      >
-                        Upgrade to Unlock
-                      </Link>
-                    </div>
-                  ) : (
-                    <Link href={`/lesson/${lesson._id}`} className="w-full text-center py-3 bg-primary text-[var(--background)] rounded-xl font-bold hover:opacity-90 transition mt-auto">
-                      See Details
-                    </Link>
-                  )}
-
-                </motion.div>
-              );
-            })}
+          <div className="text-center py-20 text-gray-500 dark:text-gray-400">Loading lessons...</div>
+        ) : lessons.length === 0 ? (
+          <div className="card-theme rounded-3xl p-16 text-center text-gray-400 dark:text-gray-500 border-dashed shadow-sm">
+            No public lessons found matching the filters.
           </div>
+        ) : (
+          <>
+            <div className="grid md:grid-cols-3 gap-8">
+              {lessons.map((lesson) => {
+                const isLocked = (lesson.accesslevel === "premium" || lesson.accessLevel === "premium") && !isPremiumUser && currentUser?.role !== "admin";
+
+                return (
+                  <motion.div key={lesson._id} className="card-theme rounded-3xl p-6 shadow-md flex flex-col relative overflow-hidden min-h-[380px]">
+
+                    {/* Blurred content wrapper when locked */}
+                    <div className={`flex-1 flex flex-col ${isLocked ? "filter blur-[4px] pointer-events-none select-none" : ""}`}>
+                      <div className="h-48 bg-theme/5 rounded-2xl mb-4 relative overflow-hidden">
+                        <Image src={lesson.image || "/favicon.png"} fill alt="lesson" className="object-cover" />
+                      </div>
+                      <h3 className="font-bold text-theme text-xl mb-2 leading-snug truncate">{lesson.title}</h3>
+                      <p className="text-muted text-sm mb-6 flex-1">{lesson.description ? lesson.description.slice(0, 100) + "..." : ""}</p>
+                    </div>
+
+                    {/* Unlock overlay / Details Link */}
+                    {isLocked ? (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-theme/40 backdrop-blur-[2px] z-10">
+                        <Lock className="w-10 h-10 text-theme mb-3" />
+                        <span className="text-[10px] font-black text-amber-900 bg-yellow-400 px-3 py-1.5 rounded-full uppercase tracking-wider mb-4 shadow">
+                          Premium Lesson
+                        </span>
+                        <Link
+                          href="/pricing"
+                          className="w-full text-center py-3 bg-primary hover:opacity-90 text-[var(--background)] rounded-xl font-bold transition shadow-lg cursor-pointer animate-pulse"
+                        >
+                          Upgrade to Unlock
+                        </Link>
+                      </div>
+                    ) : (
+                      <Link href={`/lesson/${lesson._id}`} className="w-full text-center py-3 bg-primary text-[var(--background)] rounded-xl font-bold hover:opacity-90 transition mt-auto cursor-pointer">
+                        See Details
+                      </Link>
+                    )}
+
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-4 mt-12">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  className="p-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-transparent transition cursor-pointer text-theme"
+                  title="Previous Page"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+                <span className="text-sm font-bold text-theme">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  className="p-3 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 disabled:opacity-40 disabled:hover:bg-transparent transition cursor-pointer text-theme"
+                  title="Next Page"
+                >
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </main>
