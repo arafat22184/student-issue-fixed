@@ -4,6 +4,7 @@ import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Trash2, CheckCircle, Info, Calendar, User, ShieldAlert, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { confirmToast } from "@/lib/confirmToast";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ReportedLessonsPage() {
@@ -51,6 +52,16 @@ export default function ReportedLessonsPage() {
 
   // Permanently Delete Lesson from Platform
   const handleDeleteLesson = async (lessonId) => {
+    const lessonTitle = selectedGroup?.lessonTitle || "this lesson";
+    const confirmed = await confirmToast({
+      title: "Permanently Delete Lesson?",
+      description: `"${lessonTitle}" and all its reports will be deleted permanently. This cannot be undone.`,
+      confirmLabel: "Yes, Delete",
+      confirmStyle: "bg-red-600",
+      icon: <AlertTriangle size={18} className="text-red-500" />,
+    });
+    if (!confirmed) return;
+
     const toastId = toast.loading("Permanently deleting lesson...");
     try {
       const token = await getToken();
@@ -74,6 +85,16 @@ export default function ReportedLessonsPage() {
 
   // Clear Flags / Ignore Reports
   const handleIgnoreReports = async (lessonId) => {
+    const lessonTitle = selectedGroup?.lessonTitle || "this lesson";
+    const confirmed = await confirmToast({
+      title: "Ignore Reports?",
+      description: `Clear all reports for "${lessonTitle}". It will remain live on the platform.`,
+      confirmLabel: "Yes, Ignore",
+      confirmStyle: "bg-green-600",
+      icon: <CheckCircle size={18} className="text-green-500" />,
+    });
+    if (!confirmed) return;
+
     const toastId = toast.loading("Clearing lesson reports...");
     try {
       const token = await getToken();

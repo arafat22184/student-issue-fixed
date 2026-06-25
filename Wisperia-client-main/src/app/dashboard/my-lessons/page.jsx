@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { authClient, getToken } from "@/lib/auth-client";
 import {
   Eye, EyeOff, Edit, Trash2, Calendar, Heart,
-  ExternalLink, Loader2
+  ExternalLink, Loader2, AlertTriangle
 } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { confirmToast } from "@/lib/confirmToast";
 
 export default function MyLessonsPage() {
   const { data: session } = authClient.useSession();
@@ -67,8 +68,15 @@ export default function MyLessonsPage() {
     }
   };
 
-  const handleDelete = async (lessonId) => {
-    if (!window.confirm("Are you sure? This cannot be undone.")) return;
+  const handleDelete = async (lessonId, lessonTitle) => {
+    const confirmed = await confirmToast({
+      title: "Delete this lesson?",
+      description: `"${lessonTitle}" will be permanently removed. This cannot be undone.`,
+      confirmLabel: "Yes, Delete",
+      confirmStyle: "bg-red-600",
+      icon: <AlertTriangle size={18} className="text-red-500" />,
+    });
+    if (!confirmed) return;
 
     const toastId = toast.loading("Deleting...");
     try {
@@ -78,7 +86,7 @@ export default function MyLessonsPage() {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
-        toast.success("Deleted successfully", { id: toastId });
+        toast.success("Lesson deleted successfully", { id: toastId });
         setLessons(prev => prev.filter(l => l._id !== lessonId));
       }
     } catch (err) {
@@ -144,7 +152,7 @@ export default function MyLessonsPage() {
                   </td>
                   <td className="p-5 text-right flex justify-end gap-2">
                     <Link href={`/dashboard/update-lesson/${lesson._id}`} className="p-2 hover:text-blue-600"><Edit className="w-4 h-4" /></Link>
-                    <button onClick={() => handleDelete(lesson._id)} className="p-2 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
+                    <button onClick={() => handleDelete(lesson._id, lesson.title)} className="p-2 hover:text-red-600 cursor-pointer"><Trash2 className="w-4 h-4" /></button>
                   </td>
                 </tr>
               ))}

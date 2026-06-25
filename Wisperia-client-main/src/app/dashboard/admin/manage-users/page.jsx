@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { authClient, getToken } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { Shield, Trash2, UserPlus, AlertCircle } from "lucide-react";
+import { Trash2, UserPlus, ShieldCheck, Shield, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
+import { confirmToast } from "@/lib/confirmToast";
 
 export default function ManageUsersPage() {
   const { data: session, isPending } = authClient.useSession();
@@ -42,9 +43,22 @@ export default function ManageUsersPage() {
     }
   }, [session, isPending, router]);
 
-  const updateRole = async (userId, currentRole) => {
+  const updateRole = async (userId, currentRole, userName) => {
     const newRole = currentRole === "admin" ? "user" : "admin";
-    if (!confirm(`Are you sure you want to change role to ${newRole}?`)) return;
+    const isPromoting = newRole === "admin";
+
+    const confirmed = await confirmToast({
+      title: isPromoting ? "Promote to Admin?" : "Revoke Admin Access?",
+      description: isPromoting
+        ? `${userName} will gain full admin privileges.`
+        : `${userName} will be downgraded to a regular user.`,
+      confirmLabel: isPromoting ? "Yes, Promote" : "Yes, Revoke",
+      confirmStyle: isPromoting ? "bg-[#670D2F]" : "bg-orange-500",
+      icon: isPromoting
+        ? <ShieldCheck size={18} className="text-[#670D2F]" />
+        : <Shield size={18} className="text-orange-500" />,
+    });
+    if (!confirmed) return;
 
     const toastId = toast.loading("Updating role...");
     try {
@@ -56,7 +70,7 @@ export default function ManageUsersPage() {
       });
 
       if (res.ok) {
-        toast.success(`User is now ${newRole}`, { id: toastId });
+        toast.success(`${userName} is now ${newRole}`, { id: toastId });
         setUsers(prev => prev.map(u => u._id === userId ? { ...u, role: newRole } : u));
       } else {
         throw new Error();
@@ -66,8 +80,15 @@ export default function ManageUsersPage() {
     }
   };
 
-  const deleteUser = async (userId) => {
-    if (!confirm("Delete this user and all their content permanently?")) return;
+  const deleteUser = async (userId, userName) => {
+    const confirmed = await confirmToast({
+      title: "Delete User Permanently?",
+      description: `This will remove ${userName} and all their lessons. This cannot be undone.`,
+      confirmLabel: "Yes, Delete",
+      confirmStyle: "bg-red-600",
+      icon: <AlertTriangle size={18} className="text-red-500" />,
+    });
+    if (!confirmed) return;
 
     const toastId = toast.loading("Deleting user...");
     try {
@@ -78,7 +99,7 @@ export default function ManageUsersPage() {
       });
 
       if (res.ok) {
-        toast.success("User removed successfully", { id: toastId });
+        toast.success(`${userName} has been removed`, { id: toastId });
         setUsers(prev => prev.filter(u => u._id !== userId));
       } else {
         throw new Error();
@@ -135,8 +156,21 @@ export default function ManageUsersPage() {
                   </span>
                 </td>
                 <td className="p-5 text-right flex justify-end gap-2">
-                  <button onClick={() => updateRole(u._id, u.role)} className="p-2 hover:bg-gray-100 rounded-lg"><UserPlus size={16} /></button>
-                  <button onClick={() => deleteUser(u._id)} disabled={session.user.id === u._id} className="p-2 hover:bg-red-50 text-red-600 rounded-lg"><Trash2 size={16} /></button>
+                  <button
+                    onClick={() => updateRole(u._id, u.role, u.name)}
+                    title={u.role === "admin" ? "Revoke admin" : "Make admin"}
+                    className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+                  >
+                    <UserPlus size={16} />
+                  </button>
+                  <button
+                    onClick={() => deleteUser(u._id, u.name)}
+                    disabled={session.user.id === u._id}
+                    title="Delete user"
+                    className="p-2 hover:bg-red-50 text-red-600 rounded-lg disabled:opacity-30 cursor-pointer"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                 </td>
               </tr>
             ))}
